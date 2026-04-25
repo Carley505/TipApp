@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -70,7 +71,7 @@ fun CalcApp() {
 @Composable
 fun TipTimeLayout() {
     var amountInput by remember { mutableStateOf("") }
-    var tipPercentInput by remember { mutableStateOf("15") }
+    var tipPercentInput by remember { mutableStateOf("") }
     var toggleSwitch by remember { mutableStateOf(false) }
 
     val amount = amountInput.toDoubleOrNull() ?: 0.0
@@ -167,7 +168,8 @@ fun RoundTipSwitch(
     }
 }
 
-private fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boolean = false): String {
+@VisibleForTesting
+internal fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boolean = false): String {
     val tip = if(roundUp) kotlin.math.ceil((tipPercent/100 * amount)) else tipPercent/100 * amount
 
     return NumberFormat.getCurrencyInstance().format(tip)
